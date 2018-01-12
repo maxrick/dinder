@@ -2,7 +2,7 @@
   "name": "todolistapi",
   "version": "1.0.0",
   "description": "RESTful todoListApi",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "nodemon server.js"
   },
