@@ -7,6 +7,8 @@ ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1',
 dbService = process.env.DATABASE_SERVICE_NAME || 'mongodb'
 mongoHost =  process.env.MONGODB_SERVICE_HOST || '127.0.0.1',
 db_name = process.env.MONGODB_DATABASE || 'dinderdb',
+db_user = process.env.MONGODB_USER || null,
+db_password = process.env.MONGODB_PASSWORD || null,
 mongoose = require('mongoose'),
 Task = require('./api/models/todoListModel'), //created model loading here
 bodyParser = require('body-parser');
@@ -15,7 +17,12 @@ bodyParser = require('body-parser');
 console.log('port: '+port+'\nip: '+ ip+ '\ndbService: '+dbService+'\nmongoHost: '+mongoHost+'\ndbname: ' +db_name);
 //copied from nodejs guide
 //provide a sensible default for local development
-mongodb_connection_string = 'mongodb://'+mongoHost+':27017/' + db_name;
+mongodb_connection_string = 'mongodb://';//+mongoHost+':27017/' + db_name;
+if(db_user && db_password){
+  mongodb_connection_string += db_user + ':'+db_password + '@';
+}
+mongodb_connection_string += mongoHost+':27017/' + db_name;
+console.log('connection string: '+mongodb_connection_string);
 
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
