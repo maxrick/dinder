@@ -27,7 +27,7 @@ console.log('connection string: '+mongodb_connection_string);
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
 //mongoose.connect('mongodb://localhost/tododb'); 
-mongoose.connect(mongodb_connection_string);
+//mongoose.connect(mongodb_connection_string);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -40,7 +40,7 @@ var routes = require('./api/routes/todoListRoutes'); //importing route
 routes(app); //register the route
 
 
-app.listen(port, ip);
+//app.listen(port, ip);
 
 
 console.log('todo list RESTful API server started on: ' + port);
