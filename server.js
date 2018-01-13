@@ -77,7 +77,7 @@ app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'))
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
-ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
+ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1',
 mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
 mongoURLLabel = "";
 
@@ -99,6 +99,8 @@ mongoURLLabel += mongoHost + ':' + mongoPort + '/' + mongoDatabase;
 mongoURL += mongoHost + ':' +  mongoPort + '/' + mongoDatabase;
 
 }
+}else{
+  mongoURL = "mongodb://"+ip+":27017/dinderdb";
 }
 var db = null,
 dbDetails = new Object();
@@ -106,16 +108,16 @@ dbDetails = new Object();
 var initDb = function(callback) {
 if (mongoURL == null) return;
 
-var mongodb = require('mongodb');
+var mongodb = require('mongoose');
 if (mongodb == null) return;
 
-mongodb.connect(mongoURL, function(err, conn) {
+mongodb.connect(mongoURL, function(err) {
 if (err) {
   callback(err);
   return;
 }
 
-db = conn;
+db = mongodb.connection.db;
 dbDetails.databaseName = db.databaseName;
 dbDetails.url = mongoURLLabel;
 dbDetails.type = 'MongoDB';
