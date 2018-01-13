@@ -43,8 +43,25 @@ app.use(bodyParser.json());
 var routes = require('./api/routes/todoListRoutes'); //importing route
 routes(app); //register the route
 
+app.get('/pagecount', function (req, res) {
+  // try to initialize the db on every request if it's not already
+  // initialized.
+    db.collection('counts').count(function(err, count ){
+      res.send('{ pageCount: ' + count + '}');
+    });
+});
+
+// error handling
+app.use(function(err, req, res, next){
+  console.error(err.stack);
+  res.status(500).send('Something bad happened!');
+});
+
+console.log('Server running on http://%s:%s', ip, port);
 
 app.listen(port, ip);
 
 
 console.log('todo list RESTful API server started on: ' + port);
+
+module.exports = app ;
